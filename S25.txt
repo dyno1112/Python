@@ -1,0 +1,97 @@
+S25
+______________________________________
+Q1
+A)
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x_values = np.linspace(-5, 5, 100)
+y_values = np.exp(-x_values**2)
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot(x_values, y_values, zs=0, zdir='z', linestyle='--', marker='^', color='green', label='$f(x) = e^{-x^2}$')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+ax.set_zlabel('$f(x)$')
+ax.set_title('3D Graph of $f(x) = e^{-x^2}$')
+plt.show()
+--------------------------------------------------------
+b)
+import numpy as np
+import matplotlib.pyplot as plt
+x_values = np.linspace(1, 10, 100)
+y_values = np.log(3 * x_values**2)
+plt.figure(figsize=(8, 6))
+plt.plot(x_values, y_values, 'k--o', label='$f(x) = \log(3x^2)$')
+plt.xlabel('$x$')
+plt.ylabel('$f(x)$')
+plt.title('Graph of $f(x) = \log(3x^2)$')
+plt.legend()
+plt.grid(True)
+plt.show()
+------------------------------------------------------
+Q2
+A)
+import numpy as np
+import matplotlib.pyplot as plt
+vertices = np.array([[3, 3], [5, 6], [5, 2]])
+rotation_angle = -np.pi
+rotation_matrix = np.array([[np.cos(rotation_angle), -np.sin(rotation_angle)],
+                            [np.sin(rotation_angle), np.cos(rotation_angle)]])
+rotated_vertices = np.dot(rotation_matrix, vertices.T).T
+plt.figure(figsize=(8, 8))
+plt.plot(vertices[:, 0], vertices[:, 1], 'b-', label='Original Triangle', marker='o')
+plt.plot(rotated_vertices[:, 0], rotated_vertices[:, 1], 'r-', label='Rotated Triangle', marker='o')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Triangle and its Rotation')
+plt.legend()
+plt.axis('equal')
+plt.show()
+
+---------------------------------------------------
+B)
+import numpy as np
+x = np.linspace(-22, 22, 80)
+print("Generated vector x:")
+print(x)
+---------------------------------------------------------
+
+Q3
+A)
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(3.5*x+2*y)
+pro+=(x+y>=5)
+pro+=(x>=4)
+pro+=(y<=2)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+
+---------------------------------------------------
+Q4
+
+A)
+import numpy as np
+P = np.array([3, -1])
+P_reflection_x = np.array([P[0], -P[1]])
+scaling_factor_x = 2
+P_scaled_x = np.array([scaling_factor_x * P[0], P[1]])
+scaling_factor_y = 1.5
+P_scaled_y = np.array([P[0], scaling_factor_y * P[1]])
+P_reflection_line = np.array([P[1], P[0]])
+print(f"Original Point P: {P}")
+print(f"I. Reflection through X-axis: {P_reflection_x}")
+print(f"II. Scaling in X-coordinate by factor 2: {P_scaled_x}")
+print(f"III. Scaling in Y-coordinate by factor 1.5: {P_scaled_y}")
+print(f"IV. Reflection through the line y = x: {P_reflection_line}")
+

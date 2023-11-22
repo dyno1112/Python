@@ -1,0 +1,244 @@
+q1a
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Define the function
+def function_to_plot(x, y):
+    return x**2 + y**2
+
+# Generate x and y values
+x = np.linspace(-6, 6, 100)
+y = np.linspace(-6, 6, 100)
+
+# Create a meshgrid from x and y
+X, Y = np.meshgrid(x, y)
+
+# Calculate the corresponding z values using the function
+Z = function_to_plot(X, Y)
+
+# Create a 3D surface plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(X, Y, Z, cmap='viridis')
+
+# Set axis labels
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+
+# Set plot title
+ax.set_title('3D Surface Plot of z = x^2 + y^2')
+
+# Show the plot
+plt.show()
+
+
+q1b
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Define the function
+def function_to_plot(x, y):
+    return np.log(x**2 * y**2)
+
+# Generate x and y values
+x = np.linspace(-5, 5, 100)
+y = np.linspace(-5, 5, 100)
+
+# Create a meshgrid from x and y
+X, Y = np.meshgrid(x, y)
+
+# Calculate the corresponding z values using the function
+Z = function_to_plot(X, Y)
+
+# Create a 3D contour plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+contour = ax.contour(X, Y, Z, cmap='Greens')
+
+# Set axis labels
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+
+# Set plot title
+ax.set_title('3D Contour Plot of f(x, y) = log(x^2y^2)')
+
+# Add a colorbar
+fig.colorbar(contour, ax=ax, label='log(x^2y^2)')
+
+# Show the plot
+plt.show()
+
+
+
+q2b
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+def rotate_point(point, angle):
+    x, y = point
+    x_rotated = x * np.cos(angle) - y * np.sin(angle)
+    y_rotated = x * np.sin(angle) + y * np.cos(angle)
+    return x_rotated, y_rotated
+
+def rotate_polygon(vertices, angle):
+    return [rotate_point(vertex, angle) for vertex in vertices]
+
+def plot_polygon(vertices, label):
+    x = [point[0] for point in vertices]
+    y = [point[1] for point in vertices]
+
+    plt.plot(x + [x[0]], y + [y[0]], marker='o', label=label)
+
+# Given vertices
+original_vertices = np.array([[3, 3], [5, 6], [5, 2]])
+
+# Plot the original triangle
+plot_polygon(original_vertices, label='Original')
+
+# Rotate the triangle by -π radians
+angle = -np.pi
+rotated_vertices = rotate_polygon(original_vertices, angle)
+
+# Plot the rotated triangle
+plot_polygon(rotated_vertices, label='Rotated')
+
+# Set axis limits
+plt.xlim(-8, 8)
+plt.ylim(-8, 8)
+
+# Add labels and legend
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Triangle and its Rotation')
+plt.legend()
+
+# Show the plot
+plt.grid(True)
+plt.show()
+
+
+
+q2c
+
+import matplotlib.pyplot as plt
+
+def calculate_distance(point1, point2):
+    return ((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)**0.5
+
+def calculate_area(vertices):
+    n = len(vertices)
+    area = 0
+    for i in range(n):
+        j = (i + 1) % n
+        area += vertices[i][0] * vertices[j][1] - vertices[j][0] * vertices[i][1]
+    return abs(area) / 2
+
+def calculate_perimeter(vertices):
+    n = len(vertices)
+    perimeter = 0
+    for i in range(n):
+        j = (i + 1) % n
+        perimeter += calculate_distance(vertices[i], vertices[j])
+    return perimeter
+
+def draw_polygon(vertices):
+    x = [point[0] for point in vertices]
+    y = [point[1] for point in vertices]
+    
+    plt.plot(x + [x[0]], y + [y[0]], marker='o')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.title('Polygon')
+    plt.grid(True)
+    plt.show()
+
+# Given vertices
+vertices = [(0, 0), (1, 0), (2, 2), (1, 4)]
+
+# Draw the polygon
+draw_polygon(vertices)
+
+# Calculate and print area and perimeter
+area = calculate_area(vertices)
+perimeter = calculate_perimeter(vertices)
+
+print(f'Area of the polygon: {area}')
+print(f'Perimeter of the polygon: {perimeter}')
+
+
+
+q3b
+
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(x+y)
+pro+=(x>=6)
+pro+=(y>=6)
+pro+=(x+y<=11)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+
+
+q4b
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+def translate_polygon(vertices, dx, dy):
+    translated_vertices = [(x + dx, y + dy) for x, y in vertices]
+    return translated_vertices
+
+def plot_polygon(vertices, label):
+    x = [point[0] for point in vertices]
+    y = [point[1] for point in vertices]
+
+    plt.plot(x + [x[0]], y + [y[0]], marker='o', label=label)
+
+# Given vertices
+original_vertices = np.array([[3, 3], [4, 6], [5, 4], [4, 2], [2, 2]])
+
+# Plot the original polygon
+plot_polygon(original_vertices, label='Original')
+
+# Translate the polygon in x and y directions
+dx = -2
+dy = 1
+translated_vertices = translate_polygon(original_vertices, dx, dy)
+
+# Plot the translated polygon
+plot_polygon(translated_vertices, label='Translated')
+
+# Set axis limits
+plt.xlim(-5, 7)
+plt.ylim(0, 8)
+
+# Add labels and legend
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Polygon and its Translation')
+plt.legend()
+
+# Show the plot
+plt.grid(True)
+plt.show()
+
+
+
+

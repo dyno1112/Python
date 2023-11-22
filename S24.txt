@@ -1,0 +1,137 @@
+S24
+-----------------------------------------
+Q1
+A)
+
+import numpy as np
+import matplotlib.pyplot as plt
+x_values = np.linspace(0, np.pi, 100)
+y_values_sin = np.sin(x_values)
+y_values_cos = np.cos(x_values)
+fig, axs = plt.subplots(2, 1, figsize=(8, 8))
+axs[0].plot(x_values, y_values_sin, label='$\sin(x)$', color='blue')
+axs[0].set_title('Graph of $\sin(x)$')
+axs[0].set_xlabel('$x$')
+axs[0].set_ylabel('$\sin(x)$')
+axs[0].legend()
+axs[1].plot(x_values, y_values_cos, label='$\cos(x)$', color='red')
+axs[1].set_title('Graph of $\cos(x)$')
+axs[1].set_xlabel('$x$')
+axs[1].set_ylabel('$\cos(x)$')
+axs[1].legend()
+
+plt.tight_layout()
+
+plt.show()
+
+----------------------------------------------------
+b
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x = np.linspace(-1, 1, 100)
+y = np.linspace(-1, 1, 100)
+X, Y = np.meshgrid(x, y)
+Z = np.cos(np.abs(X) + np.abs(Y))
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+surface = ax.plot_surface(X, Y, Z, cmap='viridis', edgecolor='k')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('3D Surface Plot of $z = \cos(|x| + |y|)$')
+plt.show()
+---------------------------------------------------------------
+
+Q2
+A)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def draw_regular_polygon(sides, radius, center=(0, 0)):
+    theta = np.linspace(0, 2 * np.pi, sides, endpoint=False)
+    x = center[0] + radius * np.cos(theta)
+    y = center[1] + radius * np.sin(theta)
+    x = np.append(x, x[0])  # Closing the polygon
+    y = np.append(y, y[0])  # Closing the polygon
+    return x, y
+sides = 20
+radius = 1
+polygon_x, polygon_y = draw_regular_polygon(sides, radius)
+
+plt.figure(figsize=(8, 8))
+plt.plot(polygon_x, polygon_y, label=f'Regular Polygon ({sides} sides, Radius {radius})', marker='o')
+plt.axis('equal')
+
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title(f'Regular Polygon with {sides} Sides and Radius {radius}')
+plt.legend()
+
+plt.show()
+--------------------------------------------------------
+c)
+from sympy import*
+A,B,C=Point(2,2),Point(4,2),Point(3,6)
+w=Triangle(A,B,C)
+print("Triangle : ") 
+print("Area of Triangle : ",w.area)
+print("Perimeter of Triangle : ",w.perimeter)
+-----------------------------------------------------------
+
+Q3
+A)
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+z=LpVariable("z",lowBound=0)
+pro+=(3*x+5*y+4*z)
+pro+=(2*x+3*y<=8)
+pro+=(2*y+5*z<=10)
+pro+=(3*x+2*y+4*z<=15)
+print(pro)
+from scipy.optimize import linprog
+c=[-3,-5,-4]
+A=[[2,3,0],[0,2,5],[3,2,4]]
+b=[8,10,15]
+x=(0,None)
+y=(0,None)
+z=(0,None)
+res=linprog(c,A_ub=A,b_ub=b,bounds=(x,y,z),method='simplex')
+print("Result: ",res)
+
+----------------------------------------------------------------
+import numpy as np
+import matplotlib.pyplot as plt
+
+P = np.array([3, -1])
+reflection_matrix_x = np.array([[1, 0], [0, -1]])
+P_reflected_x = np.dot(reflection_matrix_x, P)
+rotation_angle = np.radians(30)
+rotation_matrix = np.array([[np.cos(rotation_angle), -np.sin(rotation_angle)],
+                            [np.sin(rotation_angle), np.cos(rotation_angle)]])
+P_rotated = np.dot(rotation_matrix, P)
+scaling_matrix_y = np.array([[1, 0], [0, 8]])
+P_scaled_y = np.dot(scaling_matrix_y, P)
+shearing_matrix_x = np.array([[1, 2], [0, 1]])
+P_sheared_x = np.dot(shearing_matrix_x, P)
+print(f"Original Point P: {P}")
+print(f"I. Reflected through X axis: {P_reflected_x}")
+print(f"II. Rotated by 30 degrees: {P_rotated}")
+print(f"III. Scaled in Y by factor 8: {P_scaled_y}")
+print(f"IV. Sheared in X direction by 2 units: {P_sheared_x}")
+plt.figure(figsize=(8, 8))
+plt.plot([P[0]], [P[1]], 'bo', label='Original Point P')
+plt.plot([P_reflected_x[0]], [P_reflected_x[1]], 'rx', label='Reflected through X axis')
+plt.plot([P_rotated[0]], [P_rotated[1]], 'g^', label='Rotated by 30 degrees')
+plt.plot([P_scaled_y[0]], [P_scaled_y[1]], 'ms', label='Scaled in Y by factor 8')
+plt.plot([P_sheared_x[0]], [P_sheared_x[1]], 'cp', label='Sheared in X by 2 units')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Point P and its Transformations')
+plt.legend()
+plt.show()

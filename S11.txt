@@ -1,0 +1,226 @@
+q1a
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x, y, z = 70, -25, 15
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x, y, z, marker='D', color='black', label='Point (70, -25, 15)')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.legend()
+plt.show()
+
+
+q1b
+
+import numpy as np
+import matplotlib.pyplot as plt
+def func(x):
+    return np.exp(-x**2)
+x_values = np.linspace(-5, 5, 100)
+y_values = func(x_values)
+plt.plot(x_values, y_values, 'r--^', label=r'$y = e^{-x^2}$')
+plt.xlabel('x-axis')
+plt.ylabel('y-axis')
+plt.title('Graph of y = e^{-x^2}')
+plt.legend()
+plt.show()
+
+
+q1c
+
+from matplotlib.pyplot import*
+x=['Math ','Science','English','Marathi','Hindi']
+y=[68,90,70,95,90]
+bar(x,y,width=0.5,color='Brown')
+xlabel('Subject')
+ylabel('Percentage of passing')
+title('Bar graph')
+show()
+
+
+a2a
+
+import matplotlib.pyplot as plt
+points = {'A': (1, 0), 'B': (2, -1), 'C': (-1, 3)}
+reflected_points = {}
+for label, (x, y) in points.items():
+    x_prime = x
+    y_prime = 2 * 3 - y  # Reflecting through the line y = 3
+    reflected_points[label] = (x_prime, y_prime)
+print("Original points:")
+for label, (x, y) in points.items():
+    print(f"{label}({x}, {y})")
+print("\nReflected points through y = 3:")
+for label, (x_prime, y_prime) in reflected_points.items():
+    print(f"{label}'({x_prime}, {y_prime})")
+fig, ax = plt.subplots()
+for label, (x, y) in points.items():
+    ax.scatter(x, y, label=label)
+    ax.text(x, y, f' {label}', verticalalignment='bottom')
+x_line = [-3, 4]  # Choose x values for the line
+y_line = [3, 3]   # Corresponding y values for the line y = 3
+ax.plot(x_line, y_line, label='y = 3', linestyle='--', color='red')
+ax.set_xlabel('x-axis')
+ax.set_ylabel('y-axis')
+ax.legend()
+plt.axhline(0, color='black',linewidth=0.5)
+plt.axvline(0, color='black',linewidth=0.5)
+plt.grid(color = 'gray', linestyle = '--', linewidth = 0.5)
+plt.show()
+
+
+q2b
+
+import matplotlib.pyplot as plt
+points = {'A': (1, 2), 'B': (2, -2), 'C': (-1, 2)}
+rotated_points = {}
+for label, (x, y) in points.items():
+    x_prime = -y
+    y_prime = x
+    rotated_points[label] = (x_prime, y_prime)
+print("Original points:")
+for label, (x, y) in points.items():
+    print(f"{label}({x}, {y})")
+print("\nRotated points by 90 degrees counterclockwise:")
+for label, (x_prime, y_prime) in rotated_points.items():
+    print(f"{label}'({x_prime}, {y_prime})")
+fig, ax = plt.subplots()
+for label, (x, y) in points.items():
+    ax.scatter(x, y, label=label)
+    ax.text(x, y, f' {label}', verticalalignment='bottom')
+for label, (x_prime, y_prime) in rotated_points.items():
+    ax.scatter(x_prime, y_prime, label=label + "'", marker='x')
+    ax.text(x_prime, y_prime, f' {label}\'', verticalalignment='bottom')
+ax.set_xlabel('x-axis')
+ax.set_ylabel('y-axis')
+ax.legend()
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.grid(color='gray', linestyle='--', linewidth=0.5)
+plt.show()
+
+
+q2c
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+def calculate_polygon_vertices(n, r, h, k):
+    """Calculate the vertices of a regular polygon with n sides, radius r, centered at (h, k)."""
+    angles = np.linspace(0, 2 * np.pi, n, endpoint=False)
+    x_vertices = h + r * np.cos(angles)
+    y_vertices = k + r * np.sin(angles)
+    return x_vertices, y_vertices
+def plot_polygon(x_vertices, y_vertices, label):
+    """Plot the regular polygon."""
+    plt.plot(x_vertices, y_vertices, label=label)
+    plt.scatter(x_vertices, y_vertices, color='red')  # Mark vertices
+    plt.text(x_vertices[0], y_vertices[0], '  A', verticalalignment='bottom')
+    plt.text(x_vertices[1], y_vertices[1], '  B', verticalalignment='bottom')
+    plt.text(x_vertices[2], y_vertices[2], '  C', verticalalignment='bottom')
+    plt.text(x_vertices[3], y_vertices[3], '  D', verticalalignment='bottom')
+    plt.text(x_vertices[4], y_vertices[4], '  E', verticalalignment='bottom')
+    plt.text(x_vertices[5], y_vertices[5], '  F', verticalalignment='bottom')
+def calculate_polygon_area_perimeter(x_vertices, y_vertices):
+    """Calculate the area and perimeter of a polygon using its vertices."""
+    area = 0.5 * np.abs(np.dot(x_vertices, np.roll(y_vertices, 1)) - np.dot(y_vertices, np.roll(x_vertices, 1)))
+    side_lengths = np.sqrt(np.diff(x_vertices)**2 + np.diff(y_vertices)**2)
+    perimeter = np.sum(side_lengths)
+    return area, perimeter
+h, k = 1, 2
+n = 6
+r = 1
+x_vertices, y_vertices = calculate_polygon_vertices(n, r, h, k)
+plot_polygon(x_vertices, y_vertices, 'Regular Hexagon')
+area, perimeter = calculate_polygon_area_perimeter(x_vertices, y_vertices)
+print(f"Area of the hexagon: {area}")
+print(f"Perimeter of the hexagon: {perimeter}")
+plt.xlabel('x-axis')
+plt.ylabel('y-axis')
+plt.legend()
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.grid(color='gray', linestyle='--', linewidth=0.5)
+plt.show()
+
+
+q3a
+
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(x+y)
+pro+=(x>=6)
+pro+=(y>=6)
+pro+=(x+y<=11)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+
+
+q4a
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def apply_shearing_y(point, shear_factor):
+    """Apply shearing in Y direction."""
+    x, y = point
+    transformed_point = [x, y + shear_factor * x]
+    return transformed_point
+def apply_scaling(point, scale_x, scale_y):
+    """Apply scaling in X and Y directions."""
+    x, y = point
+    transformed_point = [scale_x * x, scale_y * y]
+    return transformed_point
+def apply_shearing(point, shear_x, shear_y):
+    """Apply shearing in X and Y directions."""
+    x, y = point
+    transformed_point = [x + shear_x * y, y + shear_y * x]
+    return transformed_point
+def apply_rotation(point, angle_degrees):
+    """Apply rotation about origin by a given angle in degrees."""
+    angle_radians = np.radians(angle_degrees)
+    rotation_matrix = np.array([[np.cos(angle_radians), -np.sin(angle_radians)],
+                                [np.sin(angle_radians), np.cos(angle_radians)]])
+    point_matrix = np.array(point).reshape(2, 1)
+    transformed_point_matrix = np.dot(rotation_matrix, point_matrix)
+    transformed_point = list(transformed_point_matrix.flatten())
+    return transformed_point
+initial_point = [-2, 4]
+shearing_y_factor = 7
+transformed_point_shearing_y = apply_shearing_y(initial_point, shearing_y_factor)
+scaling_x_factor = 32
+scaling_y_factor = 4
+transformed_point_scaling = apply_scaling(transformed_point_shearing_y, scaling_x_factor, scaling_y_factor)
+shearing_x_factor = 2
+shearing_y_factor_2 = 4
+transformed_point_shearing = apply_shearing(transformed_point_scaling, shearing_x_factor, shearing_y_factor_2)
+rotation_angle = 45
+transformed_point_rotation = apply_rotation(transformed_point_shearing, rotation_angle)
+print(f"Initial Point: {initial_point}")
+print(f"(I) Shearing in Y direction by {shearing_y_factor} units: {transformed_point_shearing_y}")
+print(f"(II) Scaling in X and Y direction by {scaling_x_factor} and {scaling_y_factor} units respectively: {transformed_point_scaling}")
+print(f"(III) Shearing in X and Y direction by {shearing_x_factor} and {shearing_y_factor_2} units respectively: {transformed_point_shearing}")
+print(f"(IV) Rotation about origin by an angle {rotation_angle} degrees: {transformed_point_rotation}")
+fig, ax = plt.subplots()
+ax.scatter(*initial_point, label='Initial Point', color='blue')
+ax.scatter(*transformed_point_rotation, label='Transformed Point', color='red')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.legend()
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.grid(color='gray', linestyle='--', linewidth=0.5)
+plt.show()
+

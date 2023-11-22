@@ -1,0 +1,209 @@
+q1a
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Define the function
+def f(x):
+    return x**4
+
+# Generate x values from 0 to 5 with a step of 0.1
+x_values = np.arange(0, 5.1, 0.1)
+
+# Calculate y values using the function
+y_values = f(x_values)
+
+# Plot the graph with red dashed line and circle markers
+plt.plot(x_values, y_values, 'r--o', label='f(x) = x^4')
+
+# Set axis labels and title
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Graph of f(x) = x^4')
+
+# Add a legend
+plt.legend()
+
+# Show the plot
+plt.show()
+
+
+Q1b
+
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+
+# Define the function
+def f(x, y):
+    return x**2 + y**2
+
+# Generate x and y values
+x_values = np.linspace(-6, 6, 100)
+y_values = np.linspace(-6, 6, 100)
+
+# Create a meshgrid from x and y values
+x, y = np.meshgrid(x_values, y_values)
+
+# Calculate z values using the function
+z = f(x, y)
+
+# Create a 3D plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot the surface
+ax.plot_surface(x, y, z, cmap='viridis')
+
+# Set axis labels and title
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('3D Plot of z = x^2 + y^2')
+
+# Show the plot
+plt.show()
+
+
+q2b
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Function to plot a square given its vertices
+def plot_square(vertices, title):
+    # Close the square by repeating the first vertex
+    vertices.append(vertices[0])
+
+    # Extract x and y coordinates
+    x_coords, y_coords = zip(*vertices)
+
+    # Plot the square
+    plt.plot(x_coords, y_coords, marker='o')
+    
+    # Set axis labels and title
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title(title)
+
+    # Show the plot
+    plt.grid(True)
+    plt.show()
+
+# Function for uniform expansion
+def uniform_expansion(vertices, factor):
+    return [[factor * x, factor * y] for x, y in vertices]
+
+# Function for uniform reduction
+def uniform_reduction(vertices, factor):
+    return [[factor * x, factor * y] for x, y in vertices]
+
+# Square vertices
+square_vertices = [[4, 4], [2, 4], [2, 2], [4, 2]]
+
+# Plot the original square
+plot_square(square_vertices, 'Original Square')
+
+# Uniform expansion by factor 3
+expanded_square = uniform_expansion(square_vertices, 3)
+plot_square(expanded_square, 'Uniform Expansion by factor 3')
+
+# Uniform reduction by factor 0.4
+reduced_square = uniform_reduction(square_vertices, 0.4)
+plot_square(reduced_square, 'Uniform Reduction by factor 0.4')
+
+
+q2c
+
+
+import numpy as np
+import sympy as sp
+
+# Define the original line equation
+x, y = sp.symbols('x y')
+original_line_eq = 2*x + y - 3
+
+# Transformation matrix for shearing in x-direction by 2 units
+shear_x_matrix = np.array([[1, 2], [0, 1]])
+
+# Transformation matrix for shearing in y-direction by -3 units
+shear_y_matrix = np.array([[1, 0], [-3, 1]])
+
+# Apply shearing transformations to the original line equation
+transformed_line_eq_x = np.dot([x, y, 1], shear_x_matrix)
+transformed_line_eq_y = np.dot([x, y, 1], shear_y_matrix)
+
+# Solve for y in terms of x for the transformed lines
+transformed_line_eq_x_solved = sp.solve(transformed_line_eq_x[1] - 3, y)
+transformed_line_eq_y_solved = sp.solve(transformed_line_eq_y[1] - 3, y)
+
+# Print the equations of the transformed lines
+print("Equation of the line after shearing in x-direction by 2 units:")
+print(transformed_line_eq_x_solved)
+
+print("\nEquation of the line after shearing in y-direction by -3 units:")
+print(transformed_line_eq_y_solved)
+
+
+
+q3a
+
+
+
+from scipy.optimize import linprog
+
+# Coefficients of the objective function to be minimized
+c = [4, 2]
+
+# Coefficients of the inequality constraints (Ax <= b)
+A = [
+    [1, 1],   # x + y <= 3
+    [-1, 1]   # x - y >= 2
+]
+
+# Right-hand side of the inequality constraints
+b = [3, 2]
+
+# Bounds for variables (x, y)
+x_bounds = (0, None)  # x >= 0
+y_bounds = (0, None)  # y >= 0
+
+# Solve the linear programming problem
+result = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, y_bounds], method='highs')
+
+# Print the results
+print("Optimal values:")
+print("x =", result.x[0])
+print("y =", result.x[1])
+print("Optimal objective function value (Z) =", result.fun)
+
+
+q4a
+
+
+import numpy as np
+
+# Point P
+P = np.array([-2, 4])
+
+# I. Reflection through line 3x + 4y = 5
+reflection_matrix_I = np.array([[16/25, 24/25], [24/25, -16/25]])
+P_after_reflection_I = np.dot(reflection_matrix_I, P)
+
+# II. Scaling in X coordinate by factor 6
+scaling_matrix_II = np.array([[6, 0], [0, 1]])
+P_after_scaling_II = np.dot(scaling_matrix_II, P_after_reflection_I)
+
+# III. Scaling in Y coordinate by factor 4.1
+scaling_matrix_III = np.array([[1, 0], [0, 4.1]])
+P_after_scaling_III = np.dot(scaling_matrix_III, P_after_scaling_II)
+
+# IV. Reflection through line y = 2x + 3
+reflection_matrix_IV = np.array([[-1/5, 2/5], [2/5, 1/5]])
+P_after_reflection_IV = np.dot(reflection_matrix_IV, P_after_scaling_III)
+
+print("Original Point P:", P)
+print("Point after Transformation I:", P_after_reflection_I)
+print("Point after Transformation II:", P_after_scaling_II)
+print("Point after Transformation III:", P_after_scaling_III)
+print("Point after Transformation IV:", P_after_reflection_IV)

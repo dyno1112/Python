@@ -1,0 +1,146 @@
+q1a
+
+import matplotlib.pyplot as plt
+import numpy as np
+fig, ax = plt.subplots()
+ax.axhline(0, color='black', linewidth=2)
+ax.axvline(0, color='black', linewidth=2)
+vertices = np.array([[5, 4], [7, 4], [6, 6], [5, 4]])
+triangle = plt.Polygon(vertices, closed=True, edgecolor='green', fill=None)
+ax.add_patch(triangle)
+ax.set_xlim([-1, 8])
+ax.set_ylim([-1, 7])
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_title('2D Plot with Black Axes and Green Triangle')
+plt.grid(True)
+plt.show()
+
+q1b
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+def rotate_point_yz(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    rotation_matrix = np.array([
+        [np.cos(angle_radians), 0, -np.sin(angle_radians)],
+        [0, 1, 0],
+        [np.sin(angle_radians), 0, np.cos(angle_radians)]
+    ])
+    rotated_point = np.dot(rotation_matrix, point)
+  return rotated_point
+original_point = np.array([1, 2, 3])
+rotation_angle = 90  # You can change this angle as needed
+rotated_point = rotate_point_yz(original_point, rotation_angle)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(*original_point, color='red', label='Original Point')
+ax.scatter(*rotated_point, color='blue', label='Rotated Point')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('Point Rotation through YZ-plane')
+ax.legend()
+plt.show()
+
+
+q1c
+
+import numpy as np
+import matplotlib.pyplot as plt
+def f(x):
+    return np.cos(x)
+x_values = np.linspace(0, 2 * np.pi, 1000)
+y_values = f(x_values)
+plt.plot(x_values, y_values, label='f(x) = cos(x)')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Graph of f(x) = cos(x) on [0, 2π]')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+
+
+q2a
+
+import numpy as np
+import matplotlib.pyplot as plt
+def rotate_point(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    rotation_matrix = np.array([
+        [np.cos(angle_radians), -np.sin(angle_radians)],
+        [np.sin(angle_radians), np.cos(angle_radians)]
+    ])
+    rotated_point = np.dot(rotation_matrix, point)
+    return rotated_point
+start_point = np.array([1, 0])
+end_point = np.array([2, -1])
+rotated_start_point = rotate_point(start_point, 90)
+rotated_end_point = rotate_point(end_point, 90)
+plt.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], label='Original Ray', marker='o')
+plt.plot([rotated_start_point[0], rotated_end_point[0]], [rotated_start_point[1], rotated_end_point[1]], label='Rotated Ray', marker='o')
+plt.xlim([-3, 3])
+plt.ylim([-3, 3])
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Ray Rotation by 90 degrees')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+
+q2b
+
+from sympy import Point, Line, sqrt
+A = Point(0, 7)
+B = Point(5, 2)
+line_segment = Line(A, B)
+length = line_segment.length
+midpoint = line_segment.midpoint
+print("Length of the line segment AB:", length.evalf())
+print("Midpoint of the line segment AB:", midpoint.evalf())
+
+
+q2c
+
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(150*x+75*y)
+pro+=(4*x+6*y<=24)
+pro+=(5*x+3*y<=15)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+
+
+
+q4a
+
+import numpy as np
+original_point = np.array([-2, 4])
+shear_y_matrix = np.array([[1, 7], [0, 1]])
+sheared_point_i = np.dot(shear_y_matrix, original_point)
+scaling_matrix = np.array([[72, 0], [0, 7]])
+scaled_point_ii = np.dot(scaling_matrix, original_point)
+shear_xy_matrix = np.array([[1, 4], [7, 1]])
+sheared_point_iii = np.dot(shear_xy_matrix, original_point)
+angle_degrees = 60
+angle_radians = np.radians(angle_degrees)
+rotation_matrix = np.array([[np.cos(angle_radians), -np.sin(angle_radians)],
+                            [np.sin(angle_radians), np.cos(angle_radians)]])
+rotated_point_iv = np.dot(rotation_matrix, original_point)
+print("Original Point:", original_point)
+print("Shearing in Y direction by 7 units:", sheared_point_i)
+print("Scaling in X and Y direction by 72 and 7 units respectively:", scaled_point_ii)
+print("Shearing in X and Y direction by 4 and 7 units respectively:", sheared_point_iii)
+print("Rotation about origin by 60 degrees:", rotated_point_iv)

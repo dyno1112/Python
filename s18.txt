@@ -1,0 +1,87 @@
+s18
+_____________________________________________________
+
+a)
+import numpy as np
+x = np.linspace(-22, 22, 80)
+print("Generated vector x:")
+print(x)
+
+-----------------------------------------
+
+B)
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+A = np.array([1, 2])
+B = np.array([2, -2])
+C = np.array([-1, 2])
+def rotate_point(point, angle):
+    angle_rad = np.radians(angle)
+    rotation_matrix = np.array([[np.cos(angle_rad), -np.sin(angle_rad)],
+                                [np.sin(angle_rad), np.cos(angle_rad)]])
+    return np.dot(rotation_matrix, point)
+A_rotated = rotate_point(A, 90)
+B_rotated = rotate_point(B, 90)
+C_rotated = rotate_point(C, 90)
+fig, ax = plt.subplots()
+triangle_original = Polygon([A, B, C], edgecolor='blue', fill=None, linewidth=2, label='Original Triangle')
+ax.add_patch(triangle_original)
+triangle_rotated = Polygon([A_rotated, B_rotated, C_rotated], edgecolor='red', fill=None, linewidth=2, label='Rotated Triangle')
+ax.add_patch(triangle_rotated)
+ax.set_xlim(-5, 5)
+ax.set_ylim(-5, 5)
+ax.set_title('Rotation of Triangle ABC by 90 degrees')
+ax.legend()
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+
+-_________________________________________________________________
+q3
+a)
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(x+y)
+pro+=(x>=6)
+pro+=(y>=6)
+pro+=(x+y<=11)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+___________________________________________________________________
+q4
+import numpy as np
+import matplotlib.pyplot as plt
+A = np.array([3, 2])
+B = np.array([2, -3])
+rotation_angle = np.pi/6
+rotation_matrix = np.array([[np.cos(rotation_angle), -np.sin(rotation_angle)],
+                            [np.sin(rotation_angle), np.cos(rotation_angle)]])scaling_matrix = np.array([[1, 0],
+                           [0, 4]])reflection_matrix = np.array([[-1, 0],
+                              [0, -1]])
+transformed_A = np.dot(reflection_matrix, np.dot(scaling_matrix, np.dot(rotation_matrix, A)))
+transformed_B = np.dot(reflection_matrix, np.dot(scaling_matrix, np.dot(rotation_matrix, B)))
+fig, ax = plt.subplots()
+
+ax.plot([A[0], B[0]], [A[1], B[1]], 'b-', label='Original Line Segment')
+
+ax.plot([transformed_A[0], transformed_B[0]], [transformed_A[1], transformed_B[1]], 'r-', label='Transformed Line Segment')
+ax.set_xlim(-10, 10)
+ax.set_ylim(-10, 10)
+ax.set_title('Combined Transformation of Line Segment')
+ax.legend()
+
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()

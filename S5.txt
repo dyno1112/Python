@@ -1,0 +1,135 @@
+s5
+======================================================
+q1
+A)
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x_values = np.linspace(-1, 1, 100)
+y_values = np.linspace(-1, 1, 100)
+x, y = np.meshgrid(x_values, y_values)
+z = np.cos(x**2 + y**2 - 0.5)
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z, cmap='viridis', edgecolor='k')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('Surface Plot of $z = \cos(x^2 + y^2 - 0.5)$')
+plt.show()
+-------------------------------------------------------------------------
+B)
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x_values = np.linspace(0, 10, 100)
+y_values = np.linspace(0, 10, 100)
+x, y = np.meshgrid(x_values, y_values)
+z = np.sin(x**2 + y**2)
+fig = plt.figure(figsize=(12, 10))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z, cmap='viridis', edgecolor='k')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('3D Surface Plot of $f(x) = \sin(x^2 + y^2)$')
+plt.show()
+======================================================================
+q2
+a)
+import matplotlib.pyplot as plt
+import numpy as np
+def is_right_angle_triangle(vertices):
+    side1 = np.sqrt((vertices[1][0] - vertices[0][0])**2 + (vertices[1][1] - vertices[0][1])**2)
+    side2 = np.sqrt((vertices[2][0] - vertices[1][0])**2 + (vertices[2][1] - vertices[1][1])**2)
+    side3 = np.sqrt((vertices[2][0] - vertices[0][0])**2 + (vertices[2][1] - vertices[0][1])**2)
+    sides = sorted([side1, side2, side3])
+
+    return abs(sides[0]**2 + sides[1]**2 - sides[2]**2) < 1e-10
+
+vertices = np.array([(0, 0), (4, 0), (4, 3)])
+
+is_right_angle = is_right_angle_triangle(vertices)
+
+triangle = plt.Polygon(vertices, closed=True, edgecolor='black')
+plt.gca().add_patch(triangle)
+
+plt.xlim(-1, 5)
+plt.ylim(-1, 4)
+
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Triangle with Vertices (0, 0), (4, 0), and (4, 3)')
+
+plt.show()
+
+if is_right_angle:
+    print("The triangle is a right-angled triangle.")
+else:
+    print("The triangle is not a right-angled triangle.")
+_____________________________________________________________________
+c)
+from sympy import*
+A,B,C=Point(2,2),Point(4,2),Point(3,6)
+w=Triangle(A,B,C)
+print("Triangle : ") 
+print("Area of Triangle : ",w.area)
+print("Perimeter of Triangle : ",w.perimeter)
+
+=========================================================================
+Q3
+a)
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(5*x+3*y)
+pro+=(x+y<=7)
+pro+=(2*x+5*y<=1)
+print(pro)
+from scipy.optimize import linprog
+c=[-5,-3]
+A=[[1,1],[2,5]]
+b=[7,1]
+x=(0,None)
+y=(0,None)
+res=linprog(c,A_ub=A,b_ub=b,bounds=(x,y),method='simplex')
+print("Result: ",res)
+
+-------------------------------------------------------------------
+q4
+A)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_point(point, label):
+    plt.scatter(point[0], point[1], label=label)
+
+def apply_transformation(matrix, point, label):
+    transformed_point = np.dot(matrix, np.array(point + [1]))[:2]
+    plot_point(transformed_point, label)
+P = np.array([3, 8])
+plt.figure(figsize=(10, 10))
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plot_point(P, label="Original Point")
+reflection_matrix_x = np.array([[1, 0], [0, -1]])
+apply_transformation(reflection_matrix_x, P, label="Reflection through X-axis")
+scaling_matrix_x = np.array([[6, 0], [0, 1]])
+apply_transformation(scaling_matrix_x, P, label="Scaling in X-coordinate by 6")
+angle_rad = np.radians(30)
+rotation_matrix = np.array([[np.cos(angle_rad), -np.sin(angle_rad)],
+                            [np.sin(angle_rad), np.cos(angle_rad)]])
+apply_transformation(rotation_matrix, P, label="Rotation about origin (30 degrees)")
+reflection_matrix_line = np.array([[0, -1], [-1, 0]])
+apply_transformation(reflection_matrix_line, P, label="Reflection through y=-x")
+
+plt.xlim(-30, 30)
+plt.ylim(-30, 30)
+
+plt.legend()
+
+plt.grid(True)
+plt.show()
+

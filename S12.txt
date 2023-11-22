@@ -1,0 +1,122 @@
+S12
+_______________________________________
+q1
+a)
+import numpy as np
+
+P = np.array([1, 0, 0])
+
+rotation_angle = np.radians(90)
+
+rotation_matrix = np.array([[np.cos(rotation_angle), 0, np.sin(rotation_angle)],
+                            [0, 1, 0],
+                            [-np.sin(rotation_angle), 0, np.cos(rotation_angle)]])
+
+rotated_point = np.dot(rotation_matrix, P)
+
+print("Original point:", P)
+print("Rotated point through XZ-plane (clockwise, 90 degrees):", rotated_point)
+___________________________________________________________________________
+
+B)
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+x_values = np.linspace(-2, 2, 100)  # 100 points between -2 and 2
+
+y_values = f(x_values)
+
+plt.plot(x_values, y_values, label='$f(x) = x^2$')
+plt.title('Graph of $f(x) = x^2$')
+plt.xlabel('x')
+plt.ylabel('$f(x)$')
+plt.grid(True)
+plt.axhline(0, color='black',linewidth=0.5)
+plt.axvline(0, color='black',linewidth=0.5)
+plt.legend()
+
+plt.show()
+
+__________________________________________________
+
+q2
+a)
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+
+point1 = np.array([1, 0])
+point2 = np.array([2, -1])
+
+rotation_angle = np.radians(180)
+
+rotation_matrix = np.array([[np.cos(rotation_angle), -np.sin(rotation_angle)],
+                            [np.sin(rotation_angle), np.cos(rotation_angle)]])
+
+rotated_point1 = np.dot(rotation_matrix, point1)
+rotated_point2 = np.dot(rotation_matrix, point2)
+
+fig, ax = plt.subplots()
+original_segment = Line2D([point1[0], point2[0]], [point1[1], point2[1]], color='blue', linewidth=2, label='Original Segment')
+rotated_segment = Line2D([rotated_point1[0], rotated_point2[0]], [rotated_point1[1], rotated_point2[1]], color='red', linewidth=2, label='Rotated Segment')
+
+ax.add_line(original_segment)
+ax.add_line(rotated_segment)
+
+ax.set_xlim(-3, 3)
+ax.set_ylim(-3, 3)
+
+ax.set_title('Rotation of Line Segment by 180 degrees')
+ax.legend()
+
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+___________________________________________________
+c)
+from sympy import*
+A,B,C=Point(2,2),Point(4,2),Point(3,6)
+w=Triangle(A,B,C)
+print("Triangle : ") 
+print("Area of Triangle : ",w.area)
+print("Perimeter of Triangle : ",w.perimeter)
+____________________________________
+q3
+a)
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(3.5*x+2*y)
+pro+=(x+y>=5)
+pro+=(x>=4)
+pro+=(y<=2)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+'''
+______________________________________________
+q4
+import numpy as np
+P = np.array([-2, 4])
+reflection_y = np.array([-1, 1]) * P
+print("(I) Reflection through Y-axis:", reflection_y)
+scaling_x = np.array([6, 1]) * P
+print("(II) Scaling in X-coordinate by factor 6:", scaling_x)
+scaling_y = np.array([1, 4.1]) * P
+print("(III) Scaling in Y-coordinate by factor 4.1:", scaling_y)
+shearing_matrix_x = np.array([[1, 7/2],
+                              [0, 1]])
+shearing_result_x = np.dot(shearing_matrix_x, P)
+print("(IV) Shearing in X direction by 7/2 units:", shearing_result_x)
+================================================================================

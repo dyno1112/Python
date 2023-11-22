@@ -1,0 +1,151 @@
+s6
+______________________________
+
+q1
+a)
+
+from matplotlib.pyplot import*
+x=['pune ','mumbai','nashik','nagpur','thane']
+y=[268,290,270,398,295]
+barh(x,y,height=0.6,color='maroon')
+xlabel('Air Quality index')
+ylabel('city')
+title('Horizontal Bar graph')
+show()
+
+____________________
+
+B)
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x_values = np.linspace(0, 10, 100)
+y_values = np.linspace(0, 10, 100)
+
+x, y = np.meshgrid(x_values, y_values)
+
+z = np.sin(x**2 + y**2)
+
+fig = plt.figure(figsize=(12, 10))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z, cmap='viridis', edgecolor='k')
+
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('3D Surface Plot of $f(x) = \sin(x^2 + y^2)$')
+
+plt.show()
+___________________________________________________
+
+q2)
+A)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def rotate_point(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    rotation_matrix = np.array([
+        [np.cos(angle_radians), -np.sin(angle_radians)],
+        [np.sin(angle_radians), np.cos(angle_radians)]
+    ])
+    return np.dot(rotation_matrix, point)
+start_point = np.array([1, 0])
+end_point = np.array([2, -1])
+
+rotated_start_point = rotate_point(start_point, 180)
+rotated_end_point = rotate_point(end_point, 180)
+
+plt.figure(figsize=(8, 8))
+plt.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], label='Original Line Segment', marker='o')
+plt.plot([rotated_start_point[0], rotated_end_point[0]], [rotated_start_point[1], rotated_end_point[1]], label='Rotated Line Segment', marker='o', linestyle='--')
+
+plt.xlim(-3, 3)
+plt.ylim(-3, 3)
+
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Rotation of Line Segment by 180 Degrees')
+
+plt.legend()
+plt.grid(True)
+plt.show()
+__________________________________________________________________________
+
+B)
+
+from sympy import*
+A,B,C=Point(2,2),Point(4,2),Point(3,6)
+w=Triangle(A,B,C)
+print("Triangle : ") 
+
+print(" Triangle is isoceles (if==true) : ",w.is_isosceles())
+______________________________________________________________________________
+
+q3
+
+B)
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(x+y)
+pro+=(x>=6)
+pro+=(y>=6)
+pro+=(x+y<=11)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+
+
+____________________________________________________
+q4
+
+a)import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_point(point, label):
+    plt.scatter(point[0], point[1], label=label)
+
+def apply_transformation(matrix, point, label):
+    transformed_point = np.dot(matrix, np.array(point + [1]))[:2]
+    plot_point(transformed_point, label)
+
+# Original point
+P = np.array([4, -2])
+plt.figure(figsize=(10, 10))
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+
+plot_point(P, label="Original Point")
+
+reflection_matrix_y = np.array([[-1, 0], [0, 1]])
+apply_transformation(reflection_matrix_y, P, label="Reflection through Y-axis")
+
+scaling_matrix_x = np.array([[7, 0], [0, 1]])
+apply_transformation(scaling_matrix_x, P, label="Scaling in X-coordinate by 7")
+
+shearing_matrix_y = np.array([[1, 3], [0, 1]])
+apply_transformation(shearing_matrix_y, P, label="Shearing in Y direction by 3 units")
+
+reflection_matrix_line = np.array([[0, -1], [-1, 0]])
+apply_transformation(reflection_matrix_line, P, label="Reflection through y=-x")
+
+
+plt.xlim(-30, 30)
+plt.ylim(-30, 30)
+
+
+plt.legend()
+
+plt.grid(True)
+plt.show()
+

@@ -1,0 +1,138 @@
+s14
+_____________________________________________
+a)
+import numpy as np
+import matplotlib.pyplot as plt
+def f(x):
+    return x**2
+
+def g(x):
+    return x**3
+x_values = np.linspace(-1, 1, 100)  # 100 points between -1 and 1
+y_values_f = f(x_values)
+y_values_g = g(x_values)
+plt.plot(x_values, y_values_f, label='$f(x) = x^2$')
+plt.plot(x_values, y_values_g, label='$g(x) = x^3$')
+plt.title('Graphs of $f(x) = x^2$ and $g(x) = x^3$')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+
+_____________________________________________________________________________
+
+b)
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Define the function
+def f(x, y):
+    return np.sin(x) + np.cos(y)
+x_values = np.linspace(-5, 5, 100)
+y_values = np.linspace(-5, 5, 100)
+x, y = np.meshgrid(x_values, y_values)
+z = f(x, y)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+surface = ax.plot_surface(x, y, z, cmap='viridis')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('3D Plot of $z = \sin(x) + \cos(y)$')
+fig.colorbar(surface, ax=ax, shrink=0.5, aspect=10)
+
+plt.show()
+____________________________________________________
+
+q2
+b)
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+vertices = np.array([[0, 0], [2, 0], [2, 3], [1, 6]])
+def rotate_point(point, angle):
+    angle_rad = np.radians(angle)
+    rotation_matrix = np.array([[np.cos(angle_rad), -np.sin(angle_rad)],
+                                [np.sin(angle_rad), np.cos(angle_rad)]])
+    return np.dot(rotation_matrix, point)
+rotated_vertices = np.array([rotate_point(vertex, 180) for vertex in vertices])
+fig, ax = plt.subplots()
+original_polygon = Polygon(vertices, edgecolor='blue', fill=None, linewidth=2, label='Original Polygon')
+ax.add_patch(original_polygon)
+rotated_polygon = Polygon(rotated_vertices, edgecolor='red', fill=None, linewidth=2, label='Rotated Polygon')
+ax.add_patch(rotated_polygon)
+ax.set_xlim(-1, 3)
+ax.set_ylim(-1, 7)
+ax.set_title('Rotation of Polygon by 180 degrees')
+ax.legend()
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+
+c)
+import numpy as np
+
+# Given vertices of the triangle
+A = np.array([0, 0])
+B = np.array([5, 0])
+C = np.array([3, 3])
+def distance(point1, point2):
+    return np.linalg.norm(point1 - point2)
+side_a = distance(B, C)
+side_b = distance(C, A)
+side_c = distance(A, B)
+s = (side_a + side_b + side_c) / 2
+area = np.sqrt(s * (s - side_a) * (s - side_b) * (s - side_c))
+
+perimeter = side_a + side_b + side_c
+print("Length of side a:", side_a)
+print("Length of side b:", side_b)
+print("Length of side c:", side_c)
+print("Area of the triangle:", area)
+print("Perimeter of the triangle:", perimeter)
+______________________________________________________________
+q3
+a)
+
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(150*x+75*y)
+pro+=(4*x+6*y<=24)
+pro+=(5*x+3*y<=15)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+___________________________________________________________
+q4
+A)
+import numpy as np
+
+P = np.array([2, -3])
+
+reflection_x = np.array([1, -1]) * P
+print("I. Reflection through X-axis:", reflection_x)
+
+scaling_x = np.array([2, 1]) * P
+print("II. Scaling in X-coordinate by factor 2:", scaling_x)
+
+scaling_y = np.array([1, 1.5]) * P
+print("III. Scaling in Y-coordinate by factor 1.5:", scaling_y)
+
+reflection_line_y_equals_x = np.array([[0, 1],
+                                       [1, 0]])
+reflection_line_result = np.dot(reflection_line_y_equals_x, P)
+print("IV. Reflection through the line y = x:", reflection_line_result)
+

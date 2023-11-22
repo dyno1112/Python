@@ -1,0 +1,162 @@
+q1a
+
+import matplotlib.pyplot as plt
+import numpy as np
+def f(x):
+    return x**4
+x_values = np.linspace(0, 5, 100)
+y_values = f(x_values)
+plt.plot(x_values, y_values, 'r--o', label='f(x) = x^4')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Graph of f(x) = x^4')
+plt.legend()
+plt.show()
+
+q2b 
+
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+def f(x, y):
+    return np.sin(x**2 + y**2)
+x_values = np.linspace(0, 10, 100)
+y_values = np.linspace(0, 10, 100)
+x, y = np.meshgrid(x_values, y_values)
+z = f(x, y)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+surface = ax.plot_surface(x, y, z, cmap='viridis')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('f(x, y)')
+ax.set_title('3D Surface Plot of f(x, y) = sin(x^2 + y^2)')
+fig.colorbar(surface, ax=ax, shrink=0.5, aspect=10)
+plt.show()
+
+
+q1c
+
+import matplotlib.pyplot as plt
+import numpy as np
+vertices = np.array([[1, 0], [2, 1], [1, 2], [0, 1], [1, 0]])
+plt.plot(vertices[:, 0], vertices[:, 1], label='Original Rectangle')
+theta = np.pi/2
+rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)],
+                            [np.sin(theta), np.cos(theta)]])
+rotated_vertices = vertices.dot(rotation_matrix)
+plt.plot(rotated_vertices[:, 0], rotated_vertices[:, 1], label='Rotated Rectangle', linestyle='dashed')
+plt.xlim(-2, 3)
+plt.ylim(-2, 3)
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Rectangle and its Rotation')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+q2A
+
+import matplotlib.pyplot as plt
+import numpy as np
+A = np.array([5, 3])
+B = np.array([1, 4])
+def line_equation(x):
+    return x + 1
+def reflect_point(point, line_coefficients):
+    a, b, c = line_coefficients
+    x, y = point
+    x_reflected = (x - a * (a * x + b * y + c)) / (a**2 + b**2)
+    y_reflected = (y - b * (a * x + b * y + c)) / (a**2 + b**2)
+    return np.array([x_reflected, y_reflected])
+a_line = -1
+b_line = 1
+c_line = -1
+A_reflected = reflect_point(A, [a_line, b_line, c_line])
+B_reflected = reflect_point(B, [a_line, b_line, c_line])
+plt.plot([A[0], B[0]], [A[1], B[1]], label='Original Line Segment (AB)')
+x_values = np.linspace(0, 6, 100)
+plt.plot(x_values, line_equation(x_values), label='Line y = x + 1', linestyle='dashed')
+plt.plot([A_reflected[0], B_reflected[0]], [A_reflected[1], B_reflected[1]], label='Reflected Line Segment (A\'B\')', linestyle='dotted')
+plt.xlim(0, 6)
+plt.ylim(0, 6)
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Reflection of Line Segment through y = x + 1')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+q2b
+
+from sympy import Point, Line
+P = Point(5, 2)
+Q = Point(5, -2)
+R = Point(5, 0)
+are_collinear = Point.is_collinear(P, Q, R)
+ray_PQ = Line(P, Q)
+length_PQ = ray_PQ.length
+slope_PQ = ray_PQ.slope
+print("Points P(5, 2), Q(5, -2), R(5, 0):")
+print("Are the points collinear? {}".format(are_collinear))
+print("Ray passing through P and Q:")
+print("Length between P and Q:", length_PQ)
+print("Slope of the ray:", slope_PQ)
+
+q3a
+
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(3.5*x+2*y)
+pro+=(x+y>=5)
+pro+=(x>=4)
+pro+=(y<=2)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+
+q3b
+
+from sympy import Point, Line
+P = Point(5, 2)
+Q = Point(5, -2)
+R = Point(5, 0)
+are_collinear = Point.is_collinear(P, Q, R)
+ray_PQ = Line(P, Q)
+length_PQ = ray_PQ.length
+slope_PQ = ray_PQ.slope
+print("Points P(5, 2), Q(5, -2), R(5, 0):")
+print("Are the points collinear? {}".format(are_collinear))
+print("Ray passing through P and Q:")
+print("Length between P and Q:", length_PQ)
+print("Slope of the ray:", slope_PQ)
+
+q4a
+
+import numpy as np
+P = np.array([4, -2])
+reflection_y = np.array([-1, 1])
+P_reflection_y = np.dot(reflection_y, P)
+scaling_x = np.array([[5, 0], [0, 1]])
+P_scaling_x = np.dot(scaling_x, P)
+rotation_angle = np.pi/2
+rotation_matrix = np.array([[np.cos(rotation_angle), -np.sin(rotation_angle)],
+                            [np.sin(rotation_angle), np.cos(rotation_angle)]])
+P_rotation = np.dot(rotation_matrix, P)
+shearing_x = np.array([[1, 7/2], [0, 1]])
+P_shearing_x = np.dot(shearing_x, P)
+print("(I) Reflection through Y-axis:", P_reflection_y)
+print("(II) Scaling in X-coordinate by factor 5:", P_scaling_x)
+print("(III) Rotation about origin through an angle π/2:", P_rotation)
+print("(IV) Shearing in X direction by 7/2 units:", P_shearing_x)
+
+

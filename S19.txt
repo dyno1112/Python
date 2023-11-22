@@ -1,0 +1,209 @@
+q1a
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generate x values
+x = np.linspace(0, 5, 100)
+
+# Calculate y values for sin(x), e^x, and x^3
+y_sin = np.sin(x)
+y_exp = np.exp(x)
+y_cub = x**3
+
+# Create subplots
+fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+
+# Plot sin(x)
+axs[0, 0].plot(x, y_sin, label='sin(x)')
+axs[0, 0].set_title('sin(x)')
+axs[0, 0].legend()
+
+# Plot e^x
+axs[0, 1].plot(x, y_exp, label='e^x', color='orange')
+axs[0, 1].set_title('e^x')
+axs[0, 1].legend()
+
+# Plot x^3
+axs[1, 0].plot(x, y_cub, label='x^3', color='green')
+axs[1, 0].set_title('x^3')
+axs[1, 0].legend()
+
+# Hide the empty subplot
+axs[1, 1].axis('off')
+
+# Adjust layout to prevent overlap
+plt.tight_layout()
+
+# Show the plots
+plt.show()
+
+
+q2b
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Define the function z = cos(|x| + |y|)
+def func(x, y):
+    return np.cos(np.abs(x) + np.abs(y))
+
+# Generate x and y values
+x = np.linspace(-1, 1, 100)
+y = np.linspace(-1, 1, 100)
+
+# Create a meshgrid from x and y values
+X, Y = np.meshgrid(x, y)
+
+# Calculate z values
+Z = func(X, Y)
+
+# Create a 3D plot
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot the surface
+surface = ax.plot_surface(X, Y, Z, cmap='viridis')
+
+# Add labels and title
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('3D Surface Plot of z = cos(|x| + |y|)')
+
+# Add a colorbar
+fig.colorbar(surface, ax=ax, shrink=0.5, aspect=10)
+
+# Show the plot
+plt.show()
+
+
+
+q2a
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the point to be rotated
+start_point = np.array([0, 0])
+end_point = np.array([4, 4])
+
+# Define the rotation matrix for a 90-degree clockwise rotation
+rotation_matrix = np.array([[0, -1], [1, 0]])
+
+# Rotate the end point
+rotated_end_point = np.dot(rotation_matrix, end_point)
+
+# Plot the original and rotated points
+plt.plot(*start_point, 'ro', label='Start Point')
+plt.plot(*end_point, 'bo', label='End Point')
+plt.plot(*rotated_end_point, 'go', label='Rotated End Point')
+
+# Add labels and legend
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Rotation of a Point by 90 Degrees (Clockwise)')
+plt.legend()
+
+# Set equal scaling for a more accurate visualization
+plt.axis('equal')
+
+# Show the plot
+plt.show()
+
+
+
+q2b
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the original points
+A = np.array([1, 0])
+B = np.array([2, -1])
+C = np.array([-1, 3])
+
+# Define the reflection matrix
+reflection_matrix = np.array([[1, 0], [0, -1]])
+
+# Reflect the points across the line y=3
+A_reflected = np.dot(reflection_matrix, A)
+B_reflected = np.dot(reflection_matrix, B)
+C_reflected = np.dot(reflection_matrix, C)
+
+# Plot the original and reflected points
+plt.plot(*A, 'ro', label='A')
+plt.plot(*B, 'bo', label='B')
+plt.plot(*C, 'go', label='C')
+
+plt.plot(*A_reflected, 'r*', label='Reflected A')
+plt.plot(*B_reflected, 'b*', label='Reflected B')
+plt.plot(*C_reflected, 'g*', label='Reflected C')
+
+# Add the line y=3
+plt.axhline(y=3, color='k', linestyle='--', label='Reflection Line')
+
+# Add labels and legend
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Reflection of Triangle ABC across y=3')
+plt.legend()
+
+# Set equal scaling for a more accurate visualization
+plt.axis('equal')
+
+# Show the plot
+plt.show()
+
+
+q3a
+
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+z=LpVariable("z",lowBound=0)
+pro+=(3*x+5*y+4*z)
+pro+=(2*x+3*y<=8)
+pro+=(2*y+5*z<=10)
+pro+=(3*x+2*y+4*z<=15)
+print(pro)
+from scipy.optimize import linprog
+c=[-3,-5,-4]
+A=[[2,3,0],[0,2,5],[3,2,4]]
+b=[8,10,15]
+x=(0,None)
+y=(0,None)
+z=(0,None)
+res=linprog(c,A_ub=A,b_ub=b,bounds=(x,y,z),method='simplex')
+print("Result: ",res)
+
+
+q4b
+
+import numpy as np
+
+# Define the points A and B
+A = np.array([4, -1])
+B = np.array([3, 0])
+
+# Define the individual transformation matrices
+R = np.array([[-1, 0], [0, -1]])
+S = np.array([[3, 0], [0, 1]])
+F = np.array([[0, 1], [1, 0]])
+
+# Calculate the combined transformation matrix
+T = np.dot(F, np.dot(S, R))
+
+# Apply the transformation to the points A and B
+A_transformed = np.dot(T, A)
+B_transformed = np.dot(T, B)
+
+print("Combined Transformation Matrix:")
+print(T)
+print("\nTransformed Point A:", A_transformed)
+print("Transformed Point B:", B_transformed)

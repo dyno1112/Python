@@ -1,0 +1,164 @@
+S22
+_____________________________________________
+Q1
+A)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def y_function(x):
+    return np.log(x**2) + np.sin(x)
+
+x_values = np.linspace(-5 * np.pi, 5 * np.pi, 500)
+
+x_values = x_values[x_values > 0]
+
+y_values = y_function(x_values)
+
+plt.figure(figsize=(10, 6))
+
+plt.plot(x_values, y_values, label='$y = \\log(x^2) + \\sin(x)$', color='blue')
+
+plt.title('Graph of $y = \\log(x^2) + \\sin(x)$')
+plt.xlabel('$x$')
+plt.ylabel('$y$')
+plt.legend()
+
+plt.xticks(np.arange(-5*np.pi, 6*np.pi, np.pi),
+           ['-5π', '-4π', '-3π', '-2π', '-π', '0', 'π', '2π', '3π', '4π', '5π'])
+
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+
+b)
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+def parabola(x, y):
+    return x**2 + y**2
+
+x = np.linspace(-6, 6, 100)
+y = np.linspace(-6, 6, 100)
+
+X, Y = np.meshgrid(x, y)
+
+Z = parabola(X, Y)
+
+fig = plt.figure(figsize=(8, 6))
+ax = fig.add_subplot(111, projection='3d')
+
+contour = ax.contour(X, Y, Z, cmap='viridis', levels=20)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('3D Contour Plot of $z = x^2 + y^2$')
+plt.show()
+________________________________________________________________________
+
+Q2
+A)
+import numpy as np
+A = np.array([0, 0])
+B = np.array([2, 2])
+C = np.array([0, 2])
+
+def calculate_angle(point1, point2, point3):
+    vector1 = point1 - point2
+    vector2 = point3 - point2
+    dot_product = np.dot(vector1, vector2)
+    magnitude_product = np.linalg.norm(vector1) * np.linalg.norm(vector2)
+    cosine_angle = dot_product / magnitude_product
+    angle_rad = np.arccos(np.clip(cosine_angle, -1.0, 1.0))
+    angle_deg = np.degrees(angle_rad)
+    return angle_deg
+
+angle_A = calculate_angle(B, A, C)
+angle_B = calculate_angle(C, B, A)
+angle_C = calculate_angle(A, C, B)
+print(f"Angle at A: {angle_A:.2f} degrees")
+print(f"Angle at B: {angle_B:.2f} degrees")
+print(f"Angle at C: {angle_C:.2f} degrees")
+____________________________________________________
+
+b)
+import numpy as np
+
+P = np.array([3, 6])
+
+A, B, C = 1, -2, 4
+x_reflected = (P[0] - 2 * A * (A * P[0] + B * P[1] + C)) / (A**2 + B**2)
+y_reflected = (P[1] - 2 * B * (A * P[0] + B * P[1] + C)) / (A**2 + B**2)
+print(f"Original Point P: {P}")
+print(f"Reflected Point: [{x_reflected:.2f}, {y_reflected:.2f}]")
+
+
+------------------------------------------------------------------------
+Q3
+b
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(x+y)
+pro+=(x>=6)
+pro+=(y>=6)
+pro+=(x+y<=11)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+____________________________________________________________________
+
+Q4
+1)
+----
+
+import numpy as np
+
+point = np.array([1, 1])
+center = np.array([1, 4])
+angle = np.pi / 2
+
+rotation_matrix = np.array([[np.cos(angle), -np.sin(angle)],
+                            [np.sin(angle), np.cos(angle)]])
+rotated_point = center + np.dot(rotation_matrix, point - center)
+print(f"Original Point: {point}")
+print(f"Rotated Point: {rotated_point}")
+
+------
+import numpy as np
+point1 = np.array([0, 0])
+point2 = np.array([1, 0])
+
+distance = np.linalg.norm(point2 - point1)
+print(f"Distance between {point1} and {point2}: {distance}")
+
+---------
+
+import numpy as np
+
+point = np.array([3, 4])
+shearing_factor = 3
+
+shearing_matrix = np.array([[1, shearing_factor],
+                            [0, 1]])
+sheared_point = np.dot(shearing_matrix, point)
+
+print(f"Original Point: {point}")
+print(f"Sheared Point in X direction: {sheared_point}")
+-----------
+
+def point(x, y):
+    return np.array([x, y])
+point_coordinates = point(-2, 5)
+
+print(f"Represented Point: {point_coordinates}")

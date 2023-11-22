@@ -1,0 +1,109 @@
+s4
+===========================================
+q1
+a)
+import numpy as np
+import matplotlib.pyplot as plt
+x_values = np.linspace(0.01, 10, 1000)  # Using 0.01 to avoid log(0)
+y_values = np.log10(x_values)
+plt.plot(x_values, y_values, label="$f(x) = \log_{10}(x)$")
+plt.xlabel("x")
+plt.ylabel("$f(x)$")
+plt.title("Graph of $f(x) = \log_{10}(x)$")
+plt.grid(True)
+plt.legend()
+plt.show()
+__________________________________________
+
+c)
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+x_values = np.linspace(-6, 6, 100)
+y_values = np.linspace(-6, 6, 100)
+x, y = np.meshgrid(x_values, y_values)
+z = x**2 + y**2
+fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z, cmap='viridis')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('Surface Plot of $z = x^2 + y^2$')
+plt.show()
+
+==================================================================
+q2
+b)
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+from matplotlib.transforms import Affine2D
+vertices = np.array([(0, 0), (2, 0), (2, 3), (1, 6)])
+polygon = Polygon(vertices, closed=True, edgecolor='black')
+fig, ax = plt.subplots()
+ax.add_patch(polygon)
+ax.set_xlim(-1, 3)
+ax.set_ylim(-1, 7)
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_title('Polygon and its 180-degree Rotation')
+rotation_matrix = Affine2D().rotate_deg(180)
+polygon.set_transform(rotation_matrix + ax.transData)
+
+plt.grid(True)
+plt.show()
+__________________________________________________________________
+
+c)
+point1 = (2, 3)
+point2 = (4, 3)
+
+slope = (point2[1] - point1[1]) / (point2[0] - point1[0])
+
+b = point1[1] - slope * point1[0]
+
+print(f"Equation of the line: y = {slope}x + {b}")
+====================================================================
+
+Q3
+a)
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(150*x+75*y)
+pro+=(4*x+6*y<=24)
+pro+=(5*x+3*y<=15)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+==============================================================
+q4
+a)
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+points = {
+    'A': (70, -25, 15),
+    'B': (50, 72, -45),
+    'C': (58, -82, 65),
+    'D': (20, 72, -45)
+}
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.scatter(*zip(*points.values()), marker='D', color='black', label='A')  # Diamond in black
+ax.scatter(*points['B'], marker='*', color='green', label='B')  # Star in green
+ax.scatter(*points['C'], marker='.', color='green', label='C')  # Dot in green
+ax.scatter(*points['D'], marker='*', color='red', label='D')  # Star in red
+ax.legend()
+plt.show()
+==========================================================

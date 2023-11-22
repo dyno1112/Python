@@ -1,0 +1,157 @@
+q1a
+
+import numpy as np
+import matplotlib.pyplot as plt
+def f(x):
+    return x**2
+def g(x):
+    return x**3
+x_values = np.linspace(-1, 1, 100)
+
+y_values_f = f(x_values)
+y_values_g = g(x_values)
+plt.plot(x_values, y_values_f, label='f(x) = x^2')
+plt.plot(x_values, y_values_g, label='g(x) = x^3')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Graphs of f(x) and g(x)')
+plt.legend()
+plt.grid(True)
+plt.axhline(0, color='black',linewidth=0.5)
+plt.axvline(0, color='black',linewidth=0.5)
+plt.show()
+
+
+q1b
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+def paraboloid(x, y):
+    return x**2 + y**2
+x_values = np.linspace(-6, 6, 100)
+y_values = np.linspace(-6, 6, 100)
+x, y = np.meshgrid(x_values, y_values)
+z = paraboloid(x, y)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z, cmap='viridis')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Surface Plot of z = x^2 + y^2')
+plt.show()
+
+q1c
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+def parametric_equation(x):
+    return np.cos(2*x), np.sin(2*x), x
+x_values = np.linspace(10, 20, 100)
+y_values, z_values, x_values = parametric_equation(x_values)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot(x_values, y_values, z_values, color='red', label='(cos(2x), sin(2x), x)')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('3D Line Graph of (cos(2x), sin(2x), x)')
+ax.legend()
+plt.show()
+
+
+q2a
+
+import matplotlib.pyplot as plt
+def reflect_point_through_line_y3(x, y):
+    return x, 6 - y
+A = (1, 0)
+B = (2, -1)
+C = (-1, 3)
+A_reflected = reflect_point_through_line_y3(*A)
+B_reflected = reflect_point_through_line_y3(*B)
+C_reflected = reflect_point_through_line_y3(*C)
+plt.plot([A[0], B[0], C[0], A[0]], [A[1], B[1], C[1], A[1]], label='Original Triangle')
+plt.plot([A_reflected[0], B_reflected[0], C_reflected[0], A_reflected[0]],
+         [A_reflected[1], B_reflected[1], C_reflected[1], A_reflected[1]], label='Reflected Triangle')
+plt.axhline(y=3, color='r', linestyle='--', label='Reflection Line y=3')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Reflection of Triangle ABC through y = 3')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+q2b
+
+import math
+def distance(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+A = (0, 0)
+B = (5, 0)
+C = (3, 3)
+AB = distance(A[0], A[1], B[0], B[1])
+BC = distance(B[0], B[1], C[0], C[1])
+CA = distance(C[0], C[1], A[0], A[1])
+perimeter = AB + BC + CA
+area = 0.5 * abs(A[0]*(B[1] - C[1]) + B[0]*(C[1] - A[1]) + C[0]*(A[1] - B[1]))
+print(f"Perimeter: {perimeter}")
+print(f"Area: {area}")
+
+
+q3a
+
+from pulp import*
+pro=LpProblem("LPP",LpMaximize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(5*x+3*y)
+pro+=(x+y<=7)
+pro+=(2*x+5*y<=1)
+print(pro)
+from scipy.optimize import linprog
+c=[-5,-3]
+A=[[1,1],[2,5]]
+b=[7,1]
+x=(0,None)
+y=(0,None)
+res=linprog(c,A_ub=A,b_ub=b,bounds=(x,y),method='simplex')
+print("Result: ",res)
+
+q4a
+
+import numpy as np
+import matplotlib.pyplot as plt
+point = np.array([[-2], [4], [1]])
+shear_Y_matrix = np.array([[1, 7, 0], [0, 1, 0], [0, 0, 1]])
+scale_matrix = np.array([[7/2, 0, 0], [0, 7, 0], [0, 0, 1]])
+shear_XY_matrix = np.array([[1, 4, 0], [7, 1, 0], [0, 0, 1]])
+angle = np.radians(60)
+rotation_matrix = np.array([[np.cos(angle), -np.sin(angle), 0],
+                            [np.sin(angle), np.cos(angle), 0],
+                            [0, 0, 1]])
+point_sheared_Y = shear_Y_matrix @ point
+point_scaled = scale_matrix @ point
+point_sheared_XY = shear_XY_matrix @ point
+point_rotated = rotation_matrix @ point
+print("Point before transformations:", point[:-1].flatten())
+print("Point after shearing in Y direction:", point_sheared_Y[:-1].flatten())
+print("Point after scaling:", point_scaled[:-1].flatten())
+print("Point after shearing in X and Y direction:", point_sheared_XY[:-1].flatten())
+print("Point after rotation by 60 degrees:", point_rotated[:-1].flatten())
+plt.scatter(*point[:-1], label='Original Point')
+plt.scatter(*point_sheared_Y[:-1], label='Sheared in Y direction')
+plt.scatter(*point_scaled[:-1], label='Scaled')
+plt.scatter(*point_sheared_XY[:-1], label='Sheared in XY direction')
+plt.scatter(*point_rotated[:-1], label='Rotated')
+plt.legend()
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Point Transformations')
+plt.grid(True)
+plt.show()
+

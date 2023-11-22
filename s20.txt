@@ -1,0 +1,187 @@
+s20
+------------------------------------------------
+q1
+a)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return np.sin(x)
+
+def g(x):
+    return np.cos(x)
+x_values = np.linspace(-2 * np.pi, 2 * np.pi, 1000)
+
+y_values_f = f(x_values)
+y_values_g = g(x_values)
+
+plt.figure(figsize=(8, 5))
+
+plt.plot(x_values, y_values_f, label='$f(x) = \sin(x)$', color='blue')
+
+plt.plot(x_values, y_values_g, label='$g(x) = \cos(x)$', color='red')
+
+plt.title('Graphs of $f(x) = \sin(x)$ and $g(x) = \cos(x)$')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+
+plt.xticks(np.arange(-2*np.pi, 2.5*np.pi, np.pi),
+           ['-2π', '-3π/2', '-π', '-π/2', '0', 'π/2', 'π', '3π/2', '2π'])
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+
+_____________________________________________________________________________________________________
+B)import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return np.exp(x) * np.sin(x)
+
+x_values = np.linspace(-5 * np.pi, 5 * np.pi, 500)
+
+y_values = f(x_values)
+
+plt.figure(figsize=(10, 6))
+
+plt.plot(x_values, y_values, 'b^-', label='$f(x) = e^x \sin(x)$')
+
+plt.title('Graph of $f(x) = e^x \sin(x)$')
+plt.xlabel('x')
+plt.ylabel('$f(x)$')
+plt.legend()
+
+plt.xticks(np.arange(-5*np.pi, 6*np.pi, np.pi),
+           ['-5π', '-4π', '-3π', '-2π', '-π', '0', 'π', '2π', '3π', '4π', '5π'])
+
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+_____________________________________________________
+
+q2
+a)
+
+import numpy as np
+import matplotlib.pyplot as plt
+A = np.array([-5, 2])
+B = np.array([3, -4])
+
+def reflect_through_line(point, line_params):
+    a, b, c = line_params
+    x, y = point
+    denominator = a**2 + b**2
+    x_reflected = x - (2 * a * (a * x + b * y + c)) / denominator
+    y_reflected = y - (2 * b * (a * x + b * y + c)) / denominator
+    return np.array([x_reflected, y_reflected])
+a = 2
+b = -1
+c = 1
+
+A_reflected = reflect_through_line(A, [a, b, c])
+B_reflected = reflect_through_line(B, [a, b, c])
+
+fig, ax = plt.subplots()
+
+# Plot the original line segment
+ax.plot([A[0], B[0]], [A[1], B[1]], 'b-', label='Original Line Segment')
+
+x_line = np.linspace(-8, 6, 100)
+y_line = a * x_line + b * x_line + c
+ax.plot(x_line, y_line, 'g--', label='Reflection Line $y = 2x - 1$')
+
+ax.plot([A_reflected[0], B_reflected[0]], [A_reflected[1], B_reflected[1]], 'r-', label='Reflected Line Segment')
+
+ax.set_xlim(-8, 6)
+ax.set_ylim(-8, 6)
+
+ax.set_title('Reflection of Line Segment through $y = 2x - 1$')
+ax.legend()
+
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+_________________________________________________
+b)
+
+from sympy import*
+P,Q,R,S=Point(3,1),Point(5,1),Point(5,5),Point(3,5)
+quad=Polygon(P,Q,R,S)
+print(" polygon :   ")
+print("Area of PQRS : ",quad.area)
+print("Perimeter of n PQRS : ",quad.perimeter)
+print("Centroid  : ",quad.centroid)
+print("Vertices: ",quad.vertices)
+
+
+_______________________________________
+
+Q3
+b)
+from pulp import*
+pro=LpProblem("LPP",LpMinimize)
+x=LpVariable("x",lowBound=0)
+y=LpVariable("y",lowBound=0)
+pro+=(3.5*x+2*y)
+pro+=(x+y>=5)
+pro+=(x>=4)
+pro+=(y<=2)
+print(pro)
+st=pro.solve()
+print("Status : ",LpStatus[st])
+if(st==1):
+    print("OPtimal value : ",pro.objective.value())
+    print("X=",x.value())
+    print("y=",y.value())
+else:
+    print("Optimal solution does not exist")
+________________________________________________________________
+Q4
+a
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+P = np.array([3, -2])
+
+scaling_matrix_y = np.array([[1, 0], [0, 4]])
+
+reflection_matrix_y = np.array([[-1, 0], [0, 1]])
+
+rotation_angle = np.radians(45)
+rotation_matrix = np.array([[np.cos(rotation_angle), -np.sin(rotation_angle)],
+                            [np.sin(rotation_angle), np.cos(rotation_angle)]])
+
+reflection_matrix_line_y_equals_x = np.array([[0, 1], [1, 0]])
+
+P_scaled_y = np.dot(scaling_matrix_y, P)
+P_reflected_y = np.dot(reflection_matrix_y, P)
+P_rotated = np.dot(rotation_matrix, P)
+P_reflected_line_y_equals_x = np.dot(reflection_matrix_line_y_equals_x, P)
+
+fig, ax = plt.subplots()
+
+ax.plot(P[0], P[1], 'bo', label='Original Point P')
+
+ax.plot(P_scaled_y[0], P_scaled_y[1], 'r^', label='Scaled in y direction')
+ax.plot(P_reflected_y[0], P_reflected_y[1], 'gs', label='Reflected through y-axis')
+ax.plot(P_rotated[0], P_rotated[1], 'c*', label='Rotated about origin')
+ax.plot(P_reflected_line_y_equals_x[0], P_reflected_line_y_equals_x[1], 'mv', label='Reflected through y=x')
+
+ax.set_xlim(-5, 5)
+ax.set_ylim(-10, 10)
+
+ax.set_title('Transformations on Point P[3, -2]')
+ax.legend()
+
+plt.grid(True)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.show()
+
+
